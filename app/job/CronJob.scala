@@ -4,8 +4,12 @@ import akka.actor.Actor
 import akka.camel.{ Consumer, CamelMessage }
 import play.api._
 
-abstract class CronJob(cron: String, name: String = "default") extends Consumer {
+abstract class CronJob() extends Consumer {
 
-    def endpointUri = "quartz://%s?cron=%s" format (name, cron.split(" ").mkString("+"))
+    def cronFormat: String
+
+    def actorName: String
+
+    def endpointUri = "quartz://%s?cron=%s" format (actorName, cronFormat.split(" ").mkString("+"))
 
 }

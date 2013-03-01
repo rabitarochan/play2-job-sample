@@ -1,7 +1,14 @@
-@(message: String)
+@(schedulerForm: Form[String])
 
-@main("Welcome to Play 2.1") {
+@import helper._
+
+@main("Play2 Job sample") {
     
-    @play20.welcome(message)
+    <h1>Play2 Job sample</h1>
+
+    @form(routes.Application.restartActor) {
+      @inputText(schedulerForm("cronFormat"))
+      <input type="submit" value="Restart" />
+    }
     
 }
