@@ -9,8 +9,7 @@ import job._
 object Global extends GlobalSettings {
 
   override def onStart(app: Application) {
-    val actor = Akka.system.actorOf(Props(SampleJob("0/10 * * * * ?")))
-    //Akka.system.stop(actor)
+    SampleJob.start("0/10 * * * * ?")
   }
 
 }

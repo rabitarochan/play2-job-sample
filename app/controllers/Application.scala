@@ -29,17 +29,12 @@ object Application extends Controller {
     scheduleForm.bindFromRequest.fold(
       error => BadRequest(views.html.index(error)),
       cronFormat => {
+        println("restartActor: cronFormat = %s" format cronFormat)
         SampleJob.instance match {
-          case Some(actor) => {
-            println("some")
-            Akka.system.stop(actor.asInstanceOf[akka.actor.ActorRef])
-            Akka.system.actorOf(Props(SampleJob(cronFormat)))
-          }
-          case None        => {
-            println("none")
-            Akka.system.actorOf(Props(SampleJob("0 * * * * ?")))  
-          }
+          case Some(actor) => SampleJob.stop()
+          case None        => ()
         }
+        SampleJob.start(cronFormat)
         Redirect(routes.Application.index)
       }
     )
